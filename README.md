@@ -1,7 +1,7 @@
 # clamped-promise-all
 Executes an array of promises with a max number of parallel executions.
 
-This library contains two functions, `clampedAll` which behaves similar to [Promise.all](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all) and `clampedAllSettled` which behaves similar to [Promise.allSettled](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled).
+This library contains two functions, `clampedAll` which behaves similar to [Promise.all](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all), and `clampedAllSettled` which behaves similar to [Promise.allSettled](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/allSettled).
 
 Useful for situations where you may only make a specified number of parallel promises at a given time, e.g. [Cloudflare Workers](https://developers.cloudflare.com/workers/platform/limits/#simultaneous-open-connections).
 
@@ -32,7 +32,7 @@ const apiCalls = [
 ];
 const apiResponses = await clampedAll(apiCalls, 2); // make at most 2 api calls in parallel
 ```
-Note that unlike `Promise.all`, `clampedAll` requires an array of __functions__ that return promises, not an array of promises themselves!
+**Note that unlike `Promise.all`, `clampedAll` requires an array of _functions_ that return promises, not an array of promises themselves!**
 
 `clampedAllSettled` works in exactly the same way as `clampedAll`, except its behavior and return type matches `Promise.allSettled`, in that it will not halt if a promise rejects.
 
