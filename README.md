@@ -34,7 +34,8 @@ const apiResponses = await clampedAll(apiCalls, 2); // make at most 2 api calls 
 ```
 `clampedAllSettled` works in exactly the same way as `clampedAll`, except its behavior and return type matches `Promise.allSettled`, in that it will not reject if a promise rejects.
 
-**Note that unlike `Promise.all`, `clampedAll` requires an array of _functions_ that return promises, not an array of promises themselves!**
+### Take note
+Unlike `Promise.all`, `clampedAll` requires an array of _functions_ that return promises, **not** an array of promises themselves!
 
 Here's a typical "real-world" map example to further illustrate the difference:
 ```javascript
@@ -46,6 +47,7 @@ const apiCalls = repos.map(
 );
 const apiResponses = await clampedAll(apiCalls, 2); // make at most 2 api calls in parallel
 ```
+Note that the repo name is not mapped to the `fetch` call directly, but is instead mapped to a wrapper function that then invokes the `fetch`.
 
 ## Typescript support
 The package is written in Typescript and includes types by default. Both `clampedAll` and `clampedAllSettled` are generic, and in most cases will automatically use the input array's types to create it's output type.
