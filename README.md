@@ -35,7 +35,7 @@ const apiResponses = await clampedAll(apiCalls, 2); // make at most 2 api calls 
 `clampedAllSettled` works in exactly the same way as `clampedAll`, except its behavior and return type matches `Promise.allSettled`, in that it will not reject if a promise rejects.
 
 ### Take note
-Unlike `Promise.all`, `clampedAll` requires an array of _functions_ that return promises, **not** an array of promises themselves!
+Unlike `Promise.all` and `Promise.allSettled`, `clampedAll` and `clampedAllSettled` require an array of _functions_ that return promises, **not** an array of promises themselves!
 
 Here's a typical "real-world" map example to further illustrate the difference:
 ```javascript
