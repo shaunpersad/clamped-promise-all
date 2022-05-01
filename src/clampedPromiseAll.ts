@@ -10,7 +10,7 @@ export type SettledReturnType<Value, Reason> = {
  * Clamped alternative to Promise.all.
  */
 export function clampedAll<Value>(
-  arr: Array<() => Promise<Value>>,
+  arr: Array<() => Promise<Value> | Value>,
   clamp: number,
 ): Promise<Value[]> {
   const { length } = arr;
@@ -21,8 +21,9 @@ export function clampedAll<Value>(
     let numResults = 0;
     let isFinished = false;
     const execute = () => {
-      const index = numExecutions;
-      return arr[numExecutions++]()
+      const index = numExecutions++;
+      return Promise.resolve()
+        .then(() => arr[index]())
         .then((result) => {
           numResults++;
           if (!isFinished) {
@@ -50,7 +51,7 @@ export function clampedAll<Value>(
  * Clamped alternative to Promise.allSettled.
  */
 export function clampedAllSettled<Value, Reason = Error>(
-  arr: Array<() => Promise<Value>>,
+  arr: Array<() => Promise<Value> | Value>,
   clamp: number,
 ): Promise<SettledReturnType<Value, Reason>[]> {
   const { length } = arr;
@@ -60,8 +61,9 @@ export function clampedAllSettled<Value, Reason = Error>(
     let numExecutions = 0;
     let numResults = 0;
     const execute = () => {
-      const index = numExecutions;
-      return arr[numExecutions++]()
+      const index = numExecutions++;
+      return Promise.resolve()
+        .then(() => arr[index]())
         .then((result) => {
           results[index] = { status: 'fulfilled', value: result };
         })

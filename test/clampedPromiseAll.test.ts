@@ -109,6 +109,19 @@ describe('clamped-promise-all', () => {
       assert(results.length === 1);
       assert(results[0] === 'zero');
     });
+
+    it('handles non-promises', async () => {
+      const arr = [
+        () => 1,
+        () => Promise.resolve(2),
+        () => 3,
+      ];
+      const clamp = 1;
+      const results = await clampedAll(arr, clamp);
+      assert(results[0] === 1);
+      assert(results[1] === 2);
+      assert(results[2] === 3);
+    });
   });
 
   describe('clampedAllSettled', () => {
@@ -172,6 +185,27 @@ describe('clamped-promise-all', () => {
       const results = await clampedAllSettled(arr, clamp);
       assert(maxExecutions === 1);
       assert(results[0].status === 'fulfilled' && results[0].value === 'zero');
+    });
+
+    it('handles non-promises', async () => {
+      const arr = [
+        () => 1,
+        () => Promise.resolve(2),
+        () => 3,
+        () => {
+          throw new Error('4');
+        },
+        () => 5,
+        () => Promise.reject(new Error('6')),
+      ];
+      const clamp = 1;
+      const results = await clampedAllSettled(arr, clamp);
+      assert(results[0].status === 'fulfilled' && results[0].value === 1);
+      assert(results[1].status === 'fulfilled' && results[1].value === 2);
+      assert(results[2].status === 'fulfilled' && results[2].value === 3);
+      assert(results[3].status === 'rejected' && results[3].reason.message === '4');
+      assert(results[4].status === 'fulfilled' && results[4].value === 5);
+      assert(results[5].status === 'rejected' && results[5].reason.message === '6');
     });
   });
 });
