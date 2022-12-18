@@ -1,6 +1,6 @@
 {
   "name": "clamped-promise-all",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "Executes an array of promises with a max number of parallel executions.",
   "main": "dist/clampedPromiseAll.js",
   "types": "dist/clampedPromiseAll.d.ts",
